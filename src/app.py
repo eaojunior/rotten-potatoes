@@ -22,9 +22,15 @@ metrics = PrometheusMetrics(app, default_labels={'version': '1.0'})
 
 app.config['MONGODB_DB'] = os.getenv("MONGODB_DB", "admin")
 app.config['MONGODB_HOST'] = os.getenv("MONGODB_HOST", "localhost")
-app.config['MONGODB_PORT'] = int(os.getenv("MONGODB_PORT", "27017"))
+app.config['MONGODB_PORT'] = os.getenv("MONGODB_PORT", "27017")
 app.config['MONGODB_USERNAME'] = os.getenv("MONGODB_USERNAME", "mongouser")
 app.config['MONGODB_PASSWORD'] = os.getenv("MONGODB_PASSWORD", "mongopwd") 
+app.config['MONGO_AUTH_SOURCE'] = 'admin'
+
+app.config['MONGODB_SETTINGS'] = {
+    'connect': False,
+    'host': 'mongodb://' + app.config['MONGODB_USERNAME'] + ':' + app.config['MONGODB_PASSWORD'] + '@' + app.config['MONGODB_HOST'] + ':' + app.config['MONGODB_PORT'] + '/' + app.config['MONGODB_DB'] + '?authSource=admin'
+}
 
 db.init_app(app)  
 

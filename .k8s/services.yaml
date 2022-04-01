@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: rotten-potatoes
+  name: rotten-potatoes
+spec:
+  selector:
+    app: rotten-potatoes
+  type: NodePort
+  ports:
+  - port: 8080
+    targetPort: 8080
+    nodePort: 30001
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: rotten-potatoes-db
+  name: rotten-potatoes-db
+spec:
+  selector:
+    app: rotten-potatoes-db
+  ports:
+    - port: 27017
+  type: ClusterIP

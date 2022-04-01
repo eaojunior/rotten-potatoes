@@ -21,13 +21,14 @@ def on_starting(server):
     db = client[MONGODB_DB]
     collection = db["filme"]
 
-    if not collection.find().count() > 0:
+    print(collection.count_documents({}))
+
+    if not collection.count_documents({}) > 0:
         with open('movies.yaml') as arquivo:
             documento = yaml.full_load(arquivo)
 
             for item, doc in documento.items():       
                 for item_filme in doc:
-
 
                     filme = { "titulo": item_filme['titulo'],
                                 "resumo": item_filme['resumo'],
@@ -37,16 +38,6 @@ def on_starting(server):
                                 "elenco": item_filme['elenco'],
                                 "slide": item_filme['slide'],
                                 "thumb": item_filme['thumb'] }
-
-
-                    # filme = Filme(titulo=item_filme['titulo'],
-                    #             resumo=item_filme['resumo'],
-                    #             duracao=item_filme['duracao'],
-                    #             lancamento=item_filme['lancamento'],
-                    #             categoria=item_filme['categoria'],
-                    #             elenco=item_filme['elenco'],
-                    #             slide=item_filme['slide'],
-                    #             thumb=item_filme['thumb'])
                     
                     collection.insert_one(filme)
                     
